@@ -32,7 +32,7 @@ export const App = () => {
   const [userId, setUserId] = useState(0);
   const [hasUserIdError, setHasUserIdError] = useState(false);
 
-  const [todos, setTodods] = useState<Todo[]>(initialTodos);
+  const [todos, setTodos] = useState<Todo[]>(initialTodos);
 
   const reset = () => {
     setTitle('');
@@ -47,7 +47,7 @@ export const App = () => {
       ...data,
     };
 
-    setTodods(currentTodos => [...currentTodos, newTodo]);
+    setTodos(currentTodos => [...currentTodos, newTodo]);
   };
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +76,7 @@ export const App = () => {
     }
 
     const newTodo: Todo = {
-      id: 0,
+      id: getNewTodoId(todos),
       title,
       completed: false,
       userId,
