@@ -23,16 +23,20 @@ function getNewTodoId(todos: Todo[]) {
   return maxId + 1;
 }
 
+const regex = /^[a-zA-Zа-яА-ЯіІїЇєЄ0-9\s]+$/;
+
 export const App = () => {
   const [title, setTitle] = useState('');
-  const [hasTitleError, setHasTitleError] = useState(false);
+  const [titleErrorMessage, setTitleErrorMessage] = useState('');
+
   const [userId, setUserId] = useState(0);
   const [hasUserIdError, setHasUserIdError] = useState(false);
+
   const [todos, setTodods] = useState<Todo[]>(initialTodos);
 
   const reset = () => {
     setTitle('');
-    setHasTitleError(false);
+    setTitleErrorMessage('');
     setUserId(0);
     setHasUserIdError(false);
   };
@@ -48,7 +52,7 @@ export const App = () => {
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-    setHasTitleError(false);
+    setTitleErrorMessage('');
   };
 
   const handleUserIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -59,7 +63,14 @@ export const App = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    setHasTitleError(!title);
+    if (!title) {
+      setTitleErrorMessage('Please enter a title');
+    } else if (!regex.test(title)) {
+      setTitleErrorMessage('Title should not contain special characters');
+
+      return;
+    }
+
     setHasUserIdError(!userId);
 
     if (!title || !userId) {
@@ -94,7 +105,9 @@ export const App = () => {
             value={title}
             onChange={handleTitleChange}
           />
-          {hasTitleError && <span className="error">Please enter a title</span>}
+          {titleErrorMessage && (
+            <span className="error">{titleErrorMessage}</span>
+          )}
         </div>
 
         <div className="field">
