@@ -67,13 +67,11 @@ export const App = () => {
       setTitleErrorMessage('Please enter a title');
     } else if (!regex.test(title)) {
       setTitleErrorMessage('Title should not contain special characters');
-
-      return;
     }
 
     setHasUserIdError(!userId);
 
-    if (!title || !userId) {
+    if (!title || !userId || !regex.test(title)) {
       return;
     }
 
